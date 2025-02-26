@@ -5,10 +5,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import com.samcain.calculatorremix.databinding.ActivityMainBinding;
 
-/**
- * MainActivity class
- * Handles TabLayout and ViewPager2 to switch between calculator fragments.
- */
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
 
