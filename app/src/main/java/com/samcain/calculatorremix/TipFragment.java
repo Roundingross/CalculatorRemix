@@ -1,6 +1,5 @@
 package com.samcain.calculatorremix;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -104,24 +103,29 @@ public class TipFragment extends Fragment {
         // Check if all fields are filled
         if (!billText.isEmpty() && !tipText.isEmpty() && !peopleText.isEmpty()) {
             try {
-                double billAmount = Double.parseDouble(billText);
-                double tipPercentage = Double.parseDouble(tipText);
-                int numPeople = Integer.parseInt(peopleText);
+                // Check if the number of people is not zero (avoid division by zero)
+                if (!peopleText.equals("0")) {
+                    double billAmount = Double.parseDouble(billText);
+                    double tipPercentage = Double.parseDouble(tipText);
+                    int numPeople = Integer.parseInt(peopleText);
 
-                // Validate input
-                if (billAmount <= 0 || tipPercentage < 0 || numPeople <= 0) {
-                    showToast("Values must be positive.");
-                    return;
+                    // Validate input
+                    if (billAmount <= 0 || tipPercentage < 0 || numPeople <= 0) {
+                        showToast("Values must be positive.");
+                        return;
+                    }
+
+                    // Calculate tip amount, total amount, and per person
+                    double tipAmount = (billAmount * (tipPercentage / 100));
+                    double totalAmount = billAmount + tipAmount;
+                    double perPerson = totalAmount / numPeople;
+
+                    // Format and display the results
+                    binding.resultTextView.setText(String.format("Total: $%.2f\nTip: $%.2f\nPer Person: $%.2f",
+                            totalAmount, tipAmount, perPerson));
+                } else {
+                    showToast("Please enter a valid number of people (greater than zero).");
                 }
-
-                // Calculate tip amount, total amount, and per person
-                double tipAmount = (billAmount * (tipPercentage / 100));
-                double totalAmount = billAmount + tipAmount;
-                double perPerson = totalAmount / numPeople;
-
-                // Format and display the results
-                binding.resultTextView.setText(String.format("Total: $%.2f\nTip: $%.2f\nPer Person: $%.2f",
-                        totalAmount, tipAmount, perPerson));
             } catch (NumberFormatException e) {
                 showToast("Invalid input. Please enter valid numbers.");
             }
